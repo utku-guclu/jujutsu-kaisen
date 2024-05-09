@@ -1,13 +1,22 @@
 const character = document.getElementById("character");
-const block = document.getElementById("block");
 const jutsu = document.getElementById("fire");
 const score = document.getElementById("score");
+// sound
 const kai = document.getElementById("kai");
+
+// enemies
+const yuji = document.getElementById("yuji");
+const block = document.getElementById("block");
+const fushi = document.getElementById("fushi");
 
 const playBtn = document.querySelector("button");
 
 let hitCount = 0;
 let speed = 5;
+let enemy;
+
+let enemies = [yuji, block, fushi];
+let stack = [];
 
 window.onload = function () {
   document.addEventListener("keydown", function (event) {
@@ -25,6 +34,11 @@ window.onload = function () {
   });
 };
 
+function chooseEnemy() {
+  const randomIndex = Math.floor(Math.random() * enemies.length);
+  return enemies[randomIndex];
+}
+
 function jump() {
   if (!character.classList.contains("jump")) {
     character.classList.add("jump");
@@ -41,13 +55,13 @@ function fire() {
 
 let checkDeadInterval;
 
-function checkDead() {
+function checkDead(enemy) {
   checkDeadInterval = setInterval(() => {
     const characterTop = parseInt(
       window.getComputedStyle(character).getPropertyValue("top")
     );
     const blockLeft = parseInt(
-      window.getComputedStyle(block).getPropertyValue("left")
+      window.getComputedStyle(enemy).getPropertyValue("left")
     );
     if (blockLeft < 40 && blockLeft > 20 && characterTop >= 120) {
       endGame();
@@ -59,32 +73,33 @@ function checkDead() {
 
 let checkHitInterval;
 
-function checkHit() {
+function checkHit(enemy) {
   checkHitInterval = setInterval(() => {
     const jutsuLeft = parseInt(
       window.getComputedStyle(jutsu).getPropertyValue("left")
     );
-    const blockLeft = parseInt(
-      window.getComputedStyle(block).getPropertyValue("left")
+    const enemyLeft = parseInt(
+      window.getComputedStyle(enemy).getPropertyValue("left")
     );
 
     const isJutsu = jutsu.classList.contains("fire");
+    const isHit = Math.abs(jutsuLeft - enemyLeft) < 30;
 
-    const isHit = Math.abs(jutsuLeft - blockLeft) < 30;
     if (isJutsu && isHit) {
       score.textContent = ++hitCount;
       speed -= hitCount * 0.1;
-
       checkWin();
 
       jutsu.classList.remove("fire");
-      block.style.animation = "none";
-      block.style.display = "none";
+      enemy.style.animation = "none";
+      enemy.style.display = "none";
 
-      // Respawn the block after a delay
+      // Respawn the enemy after a delay
+      enemy = chooseEnemy();
+      console.log(enemy);
       setTimeout(() => {
-        block.style.animation = `block ${speed}s infinite linear`;
-        block.style.display = "block";
+        enemy.style.animation = `block ${speed}s infinite linear`;
+        enemy.style.display = "block";
       }, 1000); // Adjust the delay as needed
     }
   }, 60);
@@ -101,8 +116,9 @@ function checkWin() {
 function renderGame() {
   playBtn.style.display = "none";
   kai.play();
-  checkDead();
-  checkHit();
+  enemy = chooseEnemy();
+  checkDead(enemy);
+  checkHit(enemy);
 }
 
 function endGame() {

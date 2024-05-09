@@ -61,18 +61,35 @@ button:hover {
   background-position-y: -5px;
 }
 
-#block {
+#block,
+#yuji,
+#fushi {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: -30px;
+  background-position-y: -5px;
   width: 60px;
   height: 60px;
   /* background-color: blue; */
   position: relative;
   left: 100vw;
+  position: absolute;
+}
+
+.enemy {
   animation: block 5s infinite linear;
+}
+
+#block {
   background-image: url("assets/student.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position-x: -30px;
-  background-position-y: -5px;
+}
+
+#yuji {
+  background-image: url("assets/yuji.png");
+}
+
+#fushi {
+  background-image: url("assets/fushi.png");
 }
 
 #fire {
@@ -96,6 +113,10 @@ button:hover {
 
 #speedinfo {
   display: none;
+}
+
+.animate {
+  animation: block 5s infinite linear;
 }
 
 .jump {
