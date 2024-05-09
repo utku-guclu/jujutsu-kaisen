@@ -74,10 +74,12 @@ button:hover {
   position: relative;
   left: 100vw;
   position: absolute;
+  display: none;
 }
 
 .enemy {
   animation: block 5s infinite linear;
+  display: block !important;
 }
 
 #block {
