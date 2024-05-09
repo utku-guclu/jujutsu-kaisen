@@ -23,6 +23,7 @@ button:hover {
   cursor: pointer;
   background-color: #45a049; /* Change background color on hover */
 }
+
 #game {
   min-width: 500px;
   width: 100vw;
@@ -40,8 +41,10 @@ button:hover {
   height: 100%;
   filter: opacity(0.5);
   background-image: url("assets/background.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: auto 100%;
+  animation: moveBackground 500s linear infinite;
   z-index: -1;
 }
 
@@ -137,5 +140,14 @@ button:hover {
   }
   100% {
     visibility: hidden;
+  }
+}
+
+@keyframes moveBackground {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -10000px 0;
   }
 }
